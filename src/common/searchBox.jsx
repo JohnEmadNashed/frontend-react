@@ -1,3 +1,5 @@
+/* This is a reusable search box component */
+
 import React from "react";
 import SearchIcon from "@material-ui/icons/Search";
 

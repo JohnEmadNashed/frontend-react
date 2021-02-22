@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+/* This is the task section
+ * including the task itselt aligned to the left
+ * and 2 buttons (edit and delete)
+ */
+import React, { useState } from "react";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { TiEdit } from "react-icons/ti";
 import TaskForm from "./TaskForm";
-import axios from "axios";
 
+// one hook is used for the edit task
 const Task = ({ tasks, completeTask, removeTask, updateTask }) => {
   const [edit, setEdit] = useState({
     id: null,
@@ -22,6 +26,10 @@ const Task = ({ tasks, completeTask, removeTask, updateTask }) => {
     return <TaskForm edit={edit} onSubmit={submitUpdate} />;
   }
 
+  /* this returns the task mapped into a div containing title and description
+   * after this the icons div containing 2 icons edit and delete
+   * each icon onclicked is prompted with its functionality
+   */
   return tasks.map((task, index) => (
     <div
       className={task.isComplete ? "task-row complete" : "task-row"}

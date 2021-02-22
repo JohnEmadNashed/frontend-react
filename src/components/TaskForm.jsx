@@ -1,6 +1,14 @@
+/* This file contains the main layout for the form
+ * add new task with 2 inputs title and description
+ * edit a task with 2 inputs title and description
+ */
 import React, { useState, useRef } from "react";
 
 function TaskForm(props) {
+  /* 2 hooks are used
+   * one for input (title)
+   * the other is used for description (description)
+   */
   const [input, setInput] = useState(props.edit ? props.edit.title : "");
   const [description, setDescription] = useState(
     props.edit ? props.edit.description : ""
@@ -19,6 +27,7 @@ function TaskForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // randomly add new ids for the new tasks on submit
     props.onSubmit({
       id: Math.floor(Math.random() * 10000),
       title: input,
@@ -40,6 +49,7 @@ function TaskForm(props) {
   };
 
   return (
+    //Return edit task tags
     <form onSubmit={handleEdit} className="task-form">
       {props.edit ? (
         <>
@@ -66,6 +76,7 @@ function TaskForm(props) {
           </button>
         </>
       ) : (
+        //return add task tags
         <>
           <input
             placeholder="Add a task title"
