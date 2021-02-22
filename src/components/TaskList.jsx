@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import TaskForm from "./TaskForm";
 import Task from "./Task";
-import axios from "axios";
+import SearchBox from "./../common/searchBox";
+import {
+  getTasks,
+  deleteTask,
+  saveTask,
+  editTask,
+  search,
+} from "../services/taskService";
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState([]);
 
   useEffect(() => {
-    async function getUsers() {
-      const result = await axios("http://localhost:9000/api/tasks");
-      console.log(result.data);
-      setTasks(result.data);
+    async function noName() {
+      setTasks(await getTasks());
     }
-    getUsers();
+    noName();
   }, []);
 
   const addTask = (task) => {
@@ -25,8 +31,8 @@ function TaskList() {
       return;
     }
     const newTasks = [...tasks, task];
-    setTasks(newTasks);
-    console.log("newTasks", newTasks);
+    setTasks(newTasks); //state
+    saveTask(task);
   };
 
   const updateTask = (taskId, newValue) => {
@@ -42,12 +48,14 @@ function TaskList() {
     setTasks((prev) =>
       prev.map((item) => (item.id === taskId ? newValue : item))
     );
+    editTask(newValue);
   };
 
   const removeTask = (id) => {
     const removedArr = [...tasks].filter((task) => task.id !== id);
 
     setTasks(removedArr);
+    deleteTask(id);
   };
 
   const completeTask = (id) => {
@@ -59,10 +67,23 @@ function TaskList() {
     });
     setTasks(updatedTasks);
   };
+  const handleSearch = (query) => {
+    if (!query || /^\s*$/.test(query)) {
+      return;
+    } else {
+      setSearchTerm(query);
+
+      async function setSearchResults() {
+        setTasks(await search(query));
+      }
+      setSearchResults();
+    }
+  };
 
   return (
     <>
       <h1>What's the Plan for Today?</h1>
+      <SearchBox onChange={handleSearch} />
       <TaskForm onSubmit={addTask} />
       <Task
         tasks={tasks}

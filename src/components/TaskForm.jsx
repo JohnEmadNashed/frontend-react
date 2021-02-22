@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 
 function TaskForm(props) {
-  const [input, setInput] = useState(props.edit ? props.edit.value : "");
+  const [input, setInput] = useState(props.edit ? props.edit.title : "");
   const [description, setDescription] = useState(
-    props.edit ? props.edit.value : ""
+    props.edit ? props.edit.description : ""
   );
 
   const inputRef = useRef(null);
   const descriptionRef = useRef(null);
-
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // });
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -32,8 +28,19 @@ function TaskForm(props) {
     setDescription("");
   };
 
+  const handleEdit = (e) => {
+    e.preventDefault();
+    props.onSubmit({
+      id: props.edit.id,
+      title: input,
+      description: description,
+    });
+    setInput("");
+    setDescription("");
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="task-form">
+    <form onSubmit={handleEdit} className="task-form">
       {props.edit ? (
         <>
           <input
@@ -52,7 +59,9 @@ function TaskForm(props) {
             ref={descriptionRef}
             className="task-input edit"
           />
-          <button onClick={handleSubmit} className="task-button edit">
+          <br></br>
+
+          <button onClick={handleEdit} className="task-button edit">
             Update
           </button>
         </>
@@ -72,6 +81,7 @@ function TaskForm(props) {
             className="task-input"
             ref={descriptionRef}
           />
+          <br></br>
           <button onClick={handleSubmit} className="task-button">
             Add task
           </button>

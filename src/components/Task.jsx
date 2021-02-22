@@ -27,18 +27,30 @@ const Task = ({ tasks, completeTask, removeTask, updateTask }) => {
       className={task.isComplete ? "task-row complete" : "task-row"}
       key={index}
     >
-      <div key={task.id} onClick={() => completeTask(task.id)}>
-        Title:{task.title}
-        <br></br> Description:{task.description}
+      <div
+        key={task.id}
+        onClick={() => completeTask(task.id)}
+        className="task-content"
+      >
+        <p>Title: {task.title}</p>
+        <br></br>
+        <p>Description: {task.description}</p>
       </div>
 
       <div className="icons">
+        <br></br>
         <RiCloseCircleLine
           onClick={() => removeTask(task.id)}
           className="delete-icon"
         />
         <TiEdit
-          onClick={() => setEdit({ id: task.id, value: task.title })}
+          onClick={() =>
+            setEdit({
+              id: task.id,
+              title: task.title,
+              description: task.description,
+            })
+          }
           className="edit-icon"
         />
       </div>
